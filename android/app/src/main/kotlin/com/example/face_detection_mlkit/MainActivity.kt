@@ -1,4 +1,4 @@
-package com.example.face_detection_mlkit_new
+package com.example.face_detection_mlkit
 
 import io.flutter.embedding.android.FlutterActivity
 
