@@ -141,9 +141,6 @@ flutter:
     - assets/images/58--Hockey/
     - assets/images/59--people--driving--car/
     - assets/images/61--Street_Battle/
-    - assets/results/
-    - assets/models/s
-    
 
   # To add assets to your application, add an assets section, like this:
   # assets:
