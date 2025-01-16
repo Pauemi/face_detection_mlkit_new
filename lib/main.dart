@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
+import 'face_benchmark.dart';
 import 'homepage.dart';
 import 'utils/global_key.dart';
 
@@ -36,17 +37,17 @@ class _MainScreenState extends State<MainScreen> {
   
   final List<Map<String, String>> slides = const [
     {
-      'image': 'assets/images/facial_detection_image.webp',
+      'image': 'assets/carousel/facial_detection_image.webp',
       'title': 'Reconocimiento Facial',
       'text': 'Implementación de la solucion de deteccion facial',
     },
     {
-      'image': 'assets/images/machinelearning.webp',
+      'image': 'assets/carousel/machinelearning.webp',
       'title': 'Aprendizaje automático para aplicaciones multiplataforma',
       'text': 'Prototipo de implementación de ML (machine learning) en dispositivos móviles',
     },
     {
-      'image': 'assets/images/mlkit.jpg',
+      'image': 'assets/carousel/mlkit.jpg',
       'title': 'Google ML Kit ',
       'text': 'Implementación del kit de aprendizaje automático ofrecido por Google para dispositivos móviles',
     },
@@ -156,33 +157,66 @@ class _MainScreenState extends State<MainScreen> {
                 );
               }).toList(),
             ),
-            const SizedBox(height: 24), // Espacio entre el slider y el contenido siguiente
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const HomePage()),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.lightGreen, // Fondo verde claro
-                foregroundColor: Colors.white, // Color del texto
-                textStyle: const TextStyle(
-                  fontWeight: FontWeight.w600, // Peso de la fuente
+            const SizedBox(height: 24),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const HomePage()),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.lightGreen,
+                    foregroundColor: Colors.white,
+                    textStyle: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    shadowColor: Colors.black.withOpacity(0.5),
+                    elevation: 5,
+                  ),
+                  child: const Text(
+                    'Ingresar',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
                 ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8), // Borde redondeado
+                const SizedBox(width: 16),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const FaceBenchmark()),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    foregroundColor: Colors.white,
+                    textStyle: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    shadowColor: Colors.black.withOpacity(0.5),
+                    elevation: 5,
+                  ),
+                  child: const Text(
+                    'Benchmark',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
                 ),
-                shadowColor: Colors.black.withOpacity(0.5), // Color de sombra
-                elevation: 5, // Elevación de la sombra
-              ),
-              child: const Text( // Este es el child necesario para ElevatedButton
-                'Ingresar',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
+              ],
             ),
           ],
         ),

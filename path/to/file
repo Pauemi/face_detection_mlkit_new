@@ -1,0 +1,20 @@
+import 'package:flutter/services.dart' show rootBundle;
+import 'dart:convert';
+
+Future<void> validateAssetAccess() async {
+  try {
+    final manifestContent = await rootBundle.loadString('AssetManifest.json');
+    final Map<String, dynamic> manifestMap = json.decode(manifestContent);
+    
+    final hasImageFolder = manifestMap.keys.any((String key) => 
+      key.startsWith('test/test_data/images/'));
+    
+    if (hasImageFolder) {
+      print('✅ Carpeta encontrada en los assets.');
+    } else {
+      print('❌ Carpeta no encontrada. Verifica pubspec.yaml.');
+    }
+  } catch (e) {
+    print('❌ Error al acceder a los assets: $e');
+  }
+} 

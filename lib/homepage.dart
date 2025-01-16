@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     final options = FaceDetectorOptions(
       performanceMode: FaceDetectorMode.accurate,
-      enableLandmarks: true,
+      enableLandmarks: false,
       enableContours: true,
     );
     _faceDetector = FaceDetector(options: options);

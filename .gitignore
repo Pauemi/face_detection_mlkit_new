@@ -41,3 +41,18 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Test data
+test/test_data/images/**
+test/test_data/wider_face_val_bbx_gt.txt
+test/evaluation/results/*.json
+test/evaluation/results/*.csv
+
+# No ignorar directorio de test
+!test/
+!test/test_data/
+!test/test_data/images/
+
+# No ignorar directorio de imágenes de test
+!test/images/
+!test/images/**
