@@ -1,9 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
-import 'face_benchmark.dart';
 import 'homepage.dart';
 import 'utils/global_key.dart';
+import 'widgets/face_benchmark.dart';
 
 void main() {
   runApp(const FaceDetectionML());

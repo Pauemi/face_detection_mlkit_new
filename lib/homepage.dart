@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -38,42 +39,67 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
   }
 
+  Future<bool> requestStoragePermission() async {
+    var status = await Permission.storage.status;
+    if (!status.isGranted) {
+      status = await Permission.storage.request();
+      if (status.isGranted) {
+        print('✅ Permiso de almacenamiento concedido.');
+        return true;
+      } else {
+        print('❌ Permiso de almacenamiento denegado.');
+        return false;
+      }
+    }
+    return true;
+  }
+  
   Future<void> _pickImageFromGallery() async {
+    print('📸 Iniciando selección de imagen desde galería');
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
+      print('✅ Imagen seleccionada desde galería: ${pickedFile.path}');
       setState(() {
         _image = File(pickedFile.path);
         _isProcessing = true;
       });
       await _getImageDimensions();
       _detectFaces();
+    } else {
+      print('❌ No se seleccionó ninguna imagen de la galería');
     }
   }
 
   Future<void> _pickImageFromCamera() async {
+    print('📸 Iniciando captura de imagen desde cámara');
     final pickedFile = await _picker.pickImage(source: ImageSource.camera);
     if (pickedFile != null) {
+      print('✅ Imagen capturada desde cámara: ${pickedFile.path}');
       setState(() {
         _image = File(pickedFile.path);
         _isProcessing = true;
       });
       await _getImageDimensions();
       _detectFaces();
+    } else {
+      print('❌ No se capturó ninguna imagen de la cámara');
     }
   }
 
   Future<void> _getImageDimensions() async {
     if (_image == null) return;
+    print('📏 Obteniendo dimensiones de la imagen...');
     final decodedImage = await decodeImageFromList(_image!.readAsBytesSync());
     setState(() {
       _imageWidth = decodedImage.width.toDouble();
       _imageHeight = decodedImage.height.toDouble();
     });
+    print('✅ Dimensiones obtenidas: ${_imageWidth}x${_imageHeight}');
   }
 
   Future<void> _detectFaces() async {
     if (_image == null) return;
-
+    print('🔍 Iniciando detección de rostros...');
     final inputImage = InputImage.fromFile(_image!);
     final faces = await _faceDetector.processImage(inputImage);
 
@@ -81,6 +107,7 @@ class _HomePageState extends State<HomePage> {
       _faces = faces;
       _isProcessing = false;
     });
+    print('✅ Detección completada. Rostros encontrados: ${faces.length}');
   }
 
   @override

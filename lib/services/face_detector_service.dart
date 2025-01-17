@@ -1,4 +1,4 @@
-import 'dart:typed_data';
+
 
 class FaceDetection {
   final double score;
@@ -15,14 +15,3 @@ class FaceDetection {
     required this.height,
   });
 }
-
-class FaceDetectorService {
-  Future<void> init() async {
-    // Inicialización del detector
-  }
-
-  Future<List<FaceDetection>> detectFaces(Uint8List imageBytes) async {
-    // Implementa la lógica de detección facial aquí
-    return [];
-  }
-} 
