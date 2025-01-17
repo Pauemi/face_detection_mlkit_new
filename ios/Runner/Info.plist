@@ -6,6 +6,10 @@
 	<string>Necesitamos acceder a la cámara para detectar rostros.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Necesitamos acceder a la galería para seleccionar imágenes.</string>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<true />
+	<key>UIFileSharingEnabled</key>
+	<true />
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>

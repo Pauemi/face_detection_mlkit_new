@@ -9,6 +9,7 @@ import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
 import 'package:image/image.dart' as img;
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class FaceBenchmark extends StatefulWidget {
   const FaceBenchmark({super.key});
@@ -102,6 +103,27 @@ class _FaceBenchmarkState extends State<FaceBenchmark> {
     }
   }
 
+  Future<String> getDownloadsPath() async {
+    if (Platform.isAndroid) {
+      // En Android, usamos la carpeta de descargas pública
+      final directory = Directory('/storage/emulated/0/Download');
+      if (!await directory.exists()) {
+        await directory.create(recursive: true);
+      }
+      return directory.path;
+    } else if (Platform.isIOS) {
+      // En iOS, obtenemos la carpeta de descargas
+      final paths = await getApplicationDocumentsDirectory();
+      final downloadsPath = '${paths.path}/Downloads';
+      final downloadsDir = Directory(downloadsPath);
+      if (!await downloadsDir.exists()) {
+        await downloadsDir.create(recursive: true);
+      }
+      return downloadsPath;
+    }
+    throw UnsupportedError('Plataforma no soportada');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -151,6 +173,18 @@ class _FaceBenchmarkState extends State<FaceBenchmark> {
   }
 
   Future<void> _runBenchmark() async {
+    if (Platform.isAndroid) {
+      final status = await Permission.storage.request();
+      if (!status.isGranted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Se requieren permisos de almacenamiento para guardar el archivo CSV'),
+          ),
+        );
+        return;
+      }
+    }
+    
     print('🚀 Iniciando benchmark...');
     stopwatch.reset();
     stopwatch.start();
@@ -177,28 +211,19 @@ class _FaceBenchmarkState extends State<FaceBenchmark> {
       }
       print('📊 Total de imágenes a procesar: $totalImages');
 
-      // Crear el archivo CSV con timestamp al inicio del benchmark
-      final directory = await getApplicationDocumentsDirectory();
-      final outputPath = '${directory.path}/benchmark_results';
-
-      // Crear el directorio si no existe
-      final resultDirectory = Directory(outputPath);
-      if (!await resultDirectory.exists()) {
-        await resultDirectory.create(recursive: true);
-      }
-
+      // Modificar esta parte para usar la carpeta de descargas
+      final outputPath = await getDownloadsPath();
+      
       // Generar un timestamp para el nombre del archivo
-      final timestamp =
-          DateFormat('yyyyMMdd_HHmmss_SSS').format(DateTime.now());
-      final fileName =
-          'benchmark_results_$timestamp.csv'; // Nombre de archivo con timestamp y milisegundos
+      final timestamp = DateFormat('yyyyMMdd_HHmmss_SSS').format(DateTime.now());
+      final fileName = 'benchmark_results_$timestamp.csv';
       final file = File('$outputPath/$fileName');
 
       // Crear archivo con headers
       await file.writeAsString(
           'image_path,ground_truth,detected,iou,true_pos,false_pos,false_neg,precision,recall,f1_score,processing_time_ms\n');
 
-      // Asignar el archivo a la variable csvFile para usarlo en exportResultsToCSV
+      // Asignar el archivo a la variable csvFile
       csvFile = file;
 
       int processedImages = 0;
