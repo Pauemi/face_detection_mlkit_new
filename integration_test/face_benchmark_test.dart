@@ -4,16 +4,24 @@ import 'dart:io';
 
 import 'package:face_detection_mlkit/results/benchmark_result.dart';
 import 'package:face_detection_mlkit/services/face_benchmark_service.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
+  setUpAll(() async {
+    await Firebase.initializeApp();
+  });
+
   group('FaceBenchmarkService', () {
     late FaceBenchmarkService benchmarkService;
+    late FirebaseStorage storage;
 
     setUp(() {
       benchmarkService = FaceBenchmarkService();
+      storage = FirebaseStorage.instance;
     });
 
     tearDown(() async {
@@ -52,6 +60,27 @@ void main() {
       expect(
           csvContent.split('\n').length, results.length + 1); // +1 por headers
       print('✅ Verificación del contenido del CSV completada.');
+
+      // Subir el archivo a Firebase Storage
+      final String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+      final String nombreArchivo = 'benchmark_results_$timestamp.csv';
+      
+      try {
+        // Crear referencia al archivo en Firebase Storage
+        final storageRef = storage.ref('gs://facedetection-mlkit-4201d.firebasestorage.app/$nombreArchivo');
+        
+        // Subir el archivo
+        final uploadTask = await storageRef.putFile(csvFile);
+        
+        // Obtener la URL de descarga (opcional)
+        final downloadUrl = await uploadTask.ref.getDownloadURL();
+        
+        print('✅ Archivo CSV subido exitosamente');
+        print('📥 URL de descarga: $downloadUrl');
+      } catch (e) {
+        print('❌ Error al subir el archivo: $e');
+        rethrow;
+      }
     });
   });
 }
