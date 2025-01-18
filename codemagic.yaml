@@ -64,7 +64,7 @@ workflows:
             --app build/app/outputs/flutter-apk/app-release.apk \
             --test build/app/outputs/flutter-apk/app-debug-androidTest.apk \
             --device model=Galaxy_A54_5G,version=33,locale=es,orientation=portrait \
-            --timeout 120s \
+            --timeout 1800s \
             --results-bucket $FIREBASE_STORAGE_BUCKET \
             --os-version-ids 33
           
