@@ -9,10 +9,12 @@ workflows:
         FIREBASE_STORAGE_BUCKET: gs://facedetection-mlkit-4201d.firebasestorage.app
         GOOGLE_APPLICATION_CREDENTIALS: /tmp/service-account.json
       secrets:
-        - FIREBASE_SERVICE_ACCOUNT_BASE64
-
-    scripts:
-      # Paso Temporal: Listar Simuladores de iOS
+        - FIREBASE_SERVICE_ACCOUNT_BASE64: ewogICJ0eXBlIjogInNlcnZpY2VfYWNjb3VudCIsCiAgInByb2plY3RfaWQiOiAiZmFjZWRldGVjdGlvbi1tbGtpdC00MjAxZCIsCiAgInByaXZhdGVfa2V5X2lkIjogIjQ1YjE2ZDMzNjIzNDgxMTk0ZjUyN2QwNWExMDE5ZTgyZGJjZWJhOTYiLAogICJwcml2YXRlX2tleSI6ICItLS0tLUJFR0lOIFBSSVZBVEUgS0VZLS0tLS1cbk1JSUV2Z0lCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktnd2dnU2tBZ0VBQW9JQkFRRFg3YjZ1QUdhNXo1eEVcbi9Nb0hVMlQrQVYyVjc0VFVwVGFNUlk0MU8yaHRmbVA2V1h1aFg4OXdUREI4M2F1cE5DMytRQnJ6VElrK1l3c09cbkl0aVExUVJaRlRBNDZHaEJPUXBneFc0WWg5T2VuSU1NMkNtVlQwbUIvdnJER2NITyszUHQ3YXdOaGVrUXAyMXlcbnpuRUVFQU1YM3d5c2pBRVBGa2d6dHdSS2srbDhKSitTZ2x5eU1EcjdLRUgvSDNUcDg3OVBwZW9SekFLa25RM3FcblZ5U1dlYXpaOU9maTlya3pZSDZHUmMzT0FXRFNIVDA1ajVQa3JPazgrZ0c4SjRNNGpGejJZRXVONEE2RjMxQ2lcbmtsZk1pSFhscURiQjlOZ3JsZ2h3WTFocDltWUdRa2VTNU1NM2RLWStNUzVQMXdxM20rN1l2bU5SazlJV0ZIWjRcblpTc1l3dkNqQWdNQkFBRUNnZ0VBSXlUQVBKeTNHM1hsVnJzWC9LSS9sVEhPdEFrRVF3SFN3M2pNb1BCVzJqOVFcbmNWNGdCNDlLK1ZtRktNV0JXMnd4TWlqbjJnSnljZk4zeUtpMk83aFgyVkhnQTlzYm9NWHlZUGF4S1EvdVN1bnBcblVHMWNNejl3MU5ZVnBTeHJoVThhdXJaTW92VFJEcE5aZG02UUtWdWJ6VVpSejBHSUtKYjFVR2x3cXR5eEN6RzBcbk9LUmF6MGprOFlxZXBWSlRwVXRMenhEVEh4Wk8ra21PNVFsY0hmQUVoQkVKZGsrN0FTQVJjaDhlKzBvWjkzQTJcbnpwNEJIaU5NTXdPYlRwUWkxb2o5OWUvM0VaRUczcFVkWXl5ekJ2anArT2dFOUczL240ei9yQ3ZQbzRYVmo1eFJcblA0SlNKbEZoZ0NTMEtUcGh1azF3TE8rYmd3NGtST3ppeHFKQnBIM3AwUUtCZ1FEcmNPSHlZOGJqbVpLMVc0eE5cblVnODhJbXVzdm4rUkRuM1NLOVVERFBZRDJxbWZ2K2NDODRYUGZ4SGV2UUVrQy82bnNLVU5KdmVrSmZlaisreVFcbit4bFErb2N3cDE4RDlXb2R2NVVjK2lzYkpTZVNaa1ZCVUhSN01wRDhiYUdVVlg0VEQ1Z21jdWZTTlg5NDBaWHlcbnd1eE1yOTB4aU5TaTUwVmpBRnkxUjhEMGN3S0JnUURxeUszdHVwL1JFNTRRcEhhbnJqQzhNV0JZLy91bEZzTmVcbkdUTWJLRzMzQlR1ZThCMnZQcW9hOFBjRXQ0YUpqK2tJakhYd1dlMjE3cUlkOUJXZG5GQ2hZRFVaTHdIRTBRc09cbnpxS0E1aElFeG1IL00yY0N5TlB0M09pWnFKdE9Zc0dSaDg5SFVyY3hlcFZDM25pQzhlOGRiYnJkKzZMTHk3SVVcbktoZFBVRm8zRVFLQmdEZEgvZ1dIMy84NDQvV3BWVHdpZEdsT083SUgyTFFhanZoMlNrRzVIVnF5VVBtdGVYUjdcbjhZTlM5c014NWI2dEFsSWxhOXUydHBiWVExbEJvYjQ0OXl6SVprM0tQc2tUS3FOcGhIMlZUK0hEeTVMWWFKSjVcbmJhQXZzMU5SK29wMXVIQ0pUTlJhVG94USsybEc3TXBmY2xSZlJyU0d5RWFudnVjTUFyaWQ3SFI1QW9HQkFOTVVcbktJcWFSaVNLSm9sLzBzMWQ1YUxNSVhyaWFUTTdDOW9GZmRUa3ZEaGhGQUVJanllR2h4aEJtMU02VEZKUWQ0bWZcbi9raGdFVDZIbEdpcGtPVnFLM05xTTFLNDJEWkNXbGF0bjV1VFBJL2VheXdzNG1lMmRoSmJrU0xVV3d4VjdRRVJcbndHQzNGTXYvRVVKVkVMTnBIeml0OWxxc2FPZ2Y4YkgvUllXaEQvcUJBb0dCQUorQ2JhSjlrSDhpYUxPZDJGNUxcbjBrV2ZuRCtNWXpwWmpYTVpDaVVscGVnTnAwNlljS2NnbzZtcE55Z3NJTDJDNldNTitGdE9YUzJQZWFEdDV1WEZcbkFlZ0ZhZWxoc1JBNWZPNVpmazZWT0I1TGM4alJSUUZmUEhYcFFORFJYY1RFdzVIYktuVzJyL3BFeXlsUTI0WXFcbmJGTFdncGtya3RoLzM5VmJObjJZcnlCVVxuLS0tLS1FTkQgUFJJVkFURSBLRVktLS0tLVxuIiwKICAiY2xpZW50X2VtYWlsIjogImZpcmViYXNlLWFkbWluc2RrLWZic3ZjQGZhY2VkZXRlY3Rpb24tbWxraXQtNDIwMWQuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLAogICJjbGllbnRfaWQiOiAiMTE2MzY2MjU0MjQzODAyNjU3MTM4IiwKICAiYXV0aF91cmkiOiAiaHR0cHM6Ly9hY2NvdW50cy5nb29nbGUuY29tL28vb2F1dGgyL2F1dGgiLAogICJ0b2tlbl91cmkiOiAiaHR0cHM6Ly9vYXV0aDIuZ29vZ2xlYXBpcy5jb20vdG9rZW4iLAogICJhdXRoX3Byb3ZpZGVyX3g1MDlfY2VydF91cmwiOiAiaHR0cHM6Ly93d3cuZ29vZ2xlYXBpcy5jb20vb2F1dGgyL3YxL2NlcnRzIiwKICAiY2xpZW50X3g1MDlfY2VydF91cmwiOiAiaHR0cHM6Ly93d3cuZ29vZ2xlYXBpcy5jb20vcm9ib3QvdjEvbWV0YWRhdGEveDUwOS9maXJlYmFzZS1hZG1pbnNkay1mYnN2YyU0MGZhY2VkZXRlY3Rpb24tbWxraXQtNDIwMWQuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLAogICJ1bml2ZXJzZV9kb21haW4iOiAiZ29vZ2xlYXBpcy5jb20iCn0K
+      xcode:
+        version: latest # Asegura que usas la última versión de Xcode disponible
+      cocoapods: default
+   scripts:
+      # Paso Temporal: Listar Simuladores de iOS (Opcional)
       - name: Listar Simuladores de iOS
         script: |
           echo "Listando simuladores de iOS disponibles:"
@@ -24,39 +26,40 @@ workflows:
           curl https://sdk.cloud.google.com | bash > /dev/null
           source $HOME/google-cloud-sdk/path.bash.inc
           gcloud components install beta
-          
+
       # Paso 2: Configurar Google Cloud
       - name: Configurar Google Cloud
         script: |
           echo $FIREBASE_SERVICE_ACCOUNT_BASE64 | base64 --decode > $GOOGLE_APPLICATION_CREDENTIALS
           gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
           gcloud config set project $FIREBASE_PROJECT_ID
-          
-      # Paso 3: Instalar Dependencias
-      - name: Instalar Dependencias
+
+      # Paso 3: Instalar Dependencias de Flutter
+      - name: Instalar Dependencias de Flutter
         script: flutter pub get
-        
-      # Paso 4: Construir APK de Release (Android)
+
+      # Paso 4: Instalar Dependencias de CocoaPods
+      - name: Instalar Dependencias de CocoaPods
+        script: |
+          cd ios
+          pod install --repo-update
+          cd ..
+
+      # Paso 5: Construir APK de Release (Android)
       - name: Construir APK de Release (Android)
         script: flutter build apk --release
-        
-      # Paso 5: Construir APK de Pruebas Instrumentadas (Android)
-      - name: Construir APK de Pruebas Instrumentadas (Android)
-        script: flutter build apk --debug --target=integration_test/face_benchmark_test.dart
-        
-      # Paso 6: Ejecutar Pruebas Unitarias
+
+      # Paso 6: Ejecutar Pruebas de Integración en Android
+      - name: Ejecutar Pruebas de Integración en Android
+        script: |
+          flutter test integration_test/face_benchmark_test.dart
+
+      # Paso 7: Ejecutar Pruebas Unitarias (Opcional)
       - name: Ejecutar Pruebas Unitarias
         script: flutter test
-        
-      # Paso 7: Ejecutar Pruebas de Integración en Android con Flutter Drive
-      - name: Ejecutar Pruebas de Integración en Android con Flutter Drive
-        script: |
-          flutter drive \
-            --driver=integration_test/integration_test_driver.dart \
-            --target=integration_test/face_benchmark_test.dart \
-            -d emulator-5554
-          
-      # Paso 8: Ejecutar Pruebas en Firebase Test Lab (Android)
+        # Si no tienes pruebas en test/, considera eliminar este paso o agregar una prueba dummy.
+
+      # Paso 8: Ejecutar Pruebas en Firebase Test Lab (Android) con Timeout Aumentado
       - name: Ejecutar Pruebas en Firebase Test Lab (Android)
         script: |
           gcloud firebase test android run \
@@ -65,37 +68,40 @@ workflows:
             --app build/app/outputs/flutter-apk/app-release.apk \
             --test build/app/outputs/flutter-apk/app-debug-androidTest.apk \
             --device model=Galaxy_A54_5G,version=33,locale=es,orientation=portrait \
-            --timeout 1800s \
+            --timeout 1800s \ # Aumentar timeout a 30 minutos
             --results-bucket $FIREBASE_STORAGE_BUCKET \
             --os-version-ids 33
-          
-      # Paso 9: Construir IPA (iOS) 
+
+      # Paso 9: Construir IPA (iOS)
       - name: Construir IPA (iOS)
         script: |
           flutter build ios --release --no-codesign
-          xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -sdk iphoneos -configuration Release archive -archivePath build/ios/archive/Runner.xcarchive
-          xcodebuild -exportArchive -archivePath build/ios/archive/Runner.xcarchive -exportOptionsPlist ios/Runner/ExportOptions.plist -exportPath build/ios/ipa
-          
-      # Paso 10: Ejecutar Pruebas de Integración en iOS con Flutter Drive
-      - name: Ejecutar Pruebas de Integración en iOS con Flutter Drive
+          cd ios
+          xcodebuild -workspace Runner.xcworkspace -scheme Runner -sdk iphoneos -configuration Release archive -archivePath build/ios/archive/Runner.xcarchive
+          xcodebuild -exportArchive -archivePath build/ios/archive/Runner.xcarchive -exportOptionsPlist Runner/ExportOptions.plist -exportPath build/ios/ipa
+          cd ..
+
+      # Paso 10: Ejecutar Pruebas de Integración en iOS
+      - name: Ejecutar Pruebas de Integración en iOS
         script: |
-          flutter drive \
-            --driver=integration_test/integration_test_driver.dart \
-            --target=integration_test/face_benchmark_test.dart \
-            -d "iPhone 16 Plus" # Asegúrate de que el dispositivo iOS está disponible
-          
+          flutter test integration_test/face_benchmark_test.dart
+
       # Paso 11: Subir Resultados Adicionales a Firebase Storage
       - name: Subir Resultados Adicionales a Firebase Storage
         script: |
           # Subir resultados de Android
-          gsutil cp build/test_results/*.xml gs://$FIREBASE_STORAGE_BUCKET/test_results/
-          
-          # Subir resultados de iOS (si aplica)
-          gsutil cp build/ios/test_results/*.xml gs://$FIREBASE_STORAGE_BUCKET/test_results_ios/
-          
+          gsutil cp build/test_results/android/*.xml gs://$FIREBASE_STORAGE_BUCKET/test_results/android/
+          gsutil cp build/test_results/android/*.csv gs://$FIREBASE_STORAGE_BUCKET/test_results/android/
+
+          # Subir resultados de iOS
+          gsutil cp build/test_results/ios/*.xml gs://$FIREBASE_STORAGE_BUCKET/test_results/ios/
+          gsutil cp build/test_results/ios/*.csv gs://$FIREBASE_STORAGE_BUCKET/test_results/ios/
+
     artifacts:
-      - build/test_results/*.xml
-      - build/ios/test_results/*.xml
+      - build/test_results/android/*.xml
+      - build/test_results/android/*.csv
+      - build/test_results/ios/*.xml
+      - build/test_results/ios/*.csv
     publishing:
       scripts:
         - name: Notificar Compleción
