@@ -3,45 +3,98 @@ workflows:
     name: Face Detection Test Workflow
     max_build_duration: 60
     environment:
+      flutter: stable
       vars:
         FIREBASE_PROJECT_ID: facedetection-mlkit-4201d
         FIREBASE_STORAGE_BUCKET: gs://facedetection-mlkit-4201d.firebasestorage.app
         GOOGLE_APPLICATION_CREDENTIALS: /tmp/service-account.json
-      # Asegúrate de que FIREBASE_SERVICE_ACCOUNT_BASE64 esté marcada como segura
-      secure:
+      secrets:
         - FIREBASE_SERVICE_ACCOUNT_BASE64
     scripts:
+      # Paso Temporal: Listar Simuladores de iOS
+      - name: Listar Simuladores de iOS
+        script: |
+          echo "Listando simuladores de iOS disponibles:"
+          xcrun simctl list devices
+
+      # Paso 1: Instalar Google Cloud SDK
       - name: Instalar Google Cloud SDK
         script: |
           curl https://sdk.cloud.google.com | bash > /dev/null
           source $HOME/google-cloud-sdk/path.bash.inc
           gcloud components install beta
+          
+      # Paso 2: Configurar Google Cloud
       - name: Configurar Google Cloud
         script: |
           echo $FIREBASE_SERVICE_ACCOUNT_BASE64 | base64 --decode > $GOOGLE_APPLICATION_CREDENTIALS
           gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
           gcloud config set project $FIREBASE_PROJECT_ID
+          
+      # Paso 3: Instalar Dependencias
       - name: Instalar Dependencias
         script: flutter pub get
-      - name: Construir APK (Android)
+        
+      # Paso 4: Construir APK de Release (Android)
+      - name: Construir APK de Release (Android)
         script: flutter build apk --release
+        
+      # Paso 5: Construir APK de Pruebas Instrumentadas (Android)
+      - name: Construir APK de Pruebas Instrumentadas (Android)
+        script: flutter build apk --debug --target=integration_test/face_benchmark_test.dart
+        
+      # Paso 6: Ejecutar Pruebas Unitarias
       - name: Ejecutar Pruebas Unitarias
         script: flutter test
+        
+      # Paso 7: Ejecutar Pruebas de Integración en Android con Flutter Drive
+      - name: Ejecutar Pruebas de Integración en Android con Flutter Drive
+        script: |
+          flutter drive \
+            --driver=test_driver/integration_test_driver.dart \
+            --target=integration_test/face_benchmark_test.dart \
+            -d emulator-5554
+          
+      # Paso 8: Ejecutar Pruebas en Firebase Test Lab (Android)
       - name: Ejecutar Pruebas en Firebase Test Lab (Android)
         script: |
           gcloud firebase test android run \
             --project $FIREBASE_PROJECT_ID \
             --type instrumentation \
-            --app build/app/outputs/apk/release/app-release.apk \
-            --test build/app/outputs/apk/androidTest/debug/app-debug-androidTest.apk \
+            --app build/app/outputs/flutter-apk/app-release.apk \
+            --test build/app/outputs/flutter-apk/app-debug-androidTest.apk \
             --device model=Galaxy_A54_5G,version=33,locale=es,orientation=portrait \
             --timeout 120s \
-            --results-bucket $FIREBASE_STORAGE_BUCKET
-      - name: Subir Resultados a Firebase Storage
+            --results-bucket $FIREBASE_STORAGE_BUCKET \
+            --os-version-ids 33
+          
+      # Paso 9: Construir IPA (iOS) 
+      - name: Construir IPA (iOS)
         script: |
-          gsutil cp path/to/test_results/*.xml gs://$FIREBASE_STORAGE_BUCKET/test_results/
+          flutter build ios --release --no-codesign
+          xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -sdk iphoneos -configuration Release archive -archivePath build/ios/archive/Runner.xcarchive
+          xcodebuild -exportArchive -archivePath build/ios/archive/Runner.xcarchive -exportOptionsPlist ios/Runner/ExportOptions.plist -exportPath build/ios/ipa
+          
+      # Paso 10: Ejecutar Pruebas de Integración en iOS con Flutter Drive
+      - name: Ejecutar Pruebas de Integración en iOS con Flutter Drive
+        script: |
+          flutter drive \
+            --driver=test_driver/integration_test_driver.dart \
+            --target=integration_test/face_benchmark_test.dart \
+            -d ios # Asegúrate de que el dispositivo iOS está disponible
+          
+      # Paso 11: Subir Resultados Adicionales a Firebase Storage
+      - name: Subir Resultados Adicionales a Firebase Storage
+        script: |
+          # Subir resultados de Android
+          gsutil cp build/test_results/*.xml gs://$FIREBASE_STORAGE_BUCKET/test_results/
+          
+          # Subir resultados de iOS (si aplica)
+          gsutil cp build/ios/test_results/*.xml gs://$FIREBASE_STORAGE_BUCKET/test_results_ios/
+          
     artifacts:
-      - test_results/*.xml
+      - build/test_results/*.xml
+      - build/ios/test_results/*.xml
     publishing:
       scripts:
         - name: Notificar Compleción
