@@ -10,6 +10,9 @@ workflows:
         GOOGLE_APPLICATION_CREDENTIALS: /tmp/service-account.json
       secrets:
         - FIREBASE_SERVICE_ACCOUNT_BASE64
+      xcode:
+        version: latest # Asegura que usas la última versión de Xcode disponible
+        cocoapods: default
     scripts:
       # Paso Temporal: Listar Simuladores de iOS
       - name: Listar Simuladores de iOS

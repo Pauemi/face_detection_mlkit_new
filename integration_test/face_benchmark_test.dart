@@ -65,7 +65,13 @@ void main() {
       final String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
       final String nombreArchivo = 'benchmark_results_$timestamp.csv';
       
+      final String androidResultsPath = 'build/test_results/android/benchmark_results_$timestamp.csv';
+      final String iosResultsPath = 'build/test_results/ios/benchmark_results_$timestamp.csv';
+
+      await csvFile.copy(androidResultsPath); // Para Android
+      await csvFile.copy(iosResultsPath);
       try {
+         // Para iOS
         // Crear referencia al archivo en Firebase Storage
         final storageRef = storage.ref('gs://facedetection-mlkit-4201d.firebasestorage.app/$nombreArchivo');
         
@@ -81,6 +87,6 @@ void main() {
         print('❌ Error al subir el archivo: $e');
         rethrow;
       }
-    });
+    }, timeout: Timeout(Duration(seconds: 1800)));
   });
 }
