@@ -4,8 +4,8 @@ workflows:
     max_build_duration: 60
     environment:
       vars:
-        FIREBASE_PROJECT_ID: your-firebase-project-id
-        FIREBASE_STORAGE_BUCKET: your-project.appspot.com
+        FIREBASE_PROJECT_ID: facedetection-mlkit-4201d
+        FIREBASE_STORAGE_BUCKET: gs://facedetection-mlkit-4201d.firebasestorage.app
         GOOGLE_APPLICATION_CREDENTIALS: /tmp/service-account.json
       # Asegúrate de que FIREBASE_SERVICE_ACCOUNT_BASE64 esté marcada como segura
       secure:
