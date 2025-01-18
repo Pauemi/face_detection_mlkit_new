@@ -7,6 +7,11 @@
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Necesitamos acceder a la galería para seleccionar imágenes.</string>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+    </dict>
 	<true />
 	<key>UIFileSharingEnabled</key>
 	<true />

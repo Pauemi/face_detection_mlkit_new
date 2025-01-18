@@ -1,11 +1,17 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:firebase_core/firebase_core.dart' as firebase_core;
 import 'package:flutter/material.dart';
 
+import 'firebase_options.dart' as firebase_options;
 import 'homepage.dart';
 import 'utils/global_key.dart';
 import 'widgets/face_benchmark.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await firebase_core.Firebase.initializeApp(
+    options: firebase_options.DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const FaceDetectionML());
 }
 

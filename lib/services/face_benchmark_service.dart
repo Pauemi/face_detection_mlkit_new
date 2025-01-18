@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math' as math;
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_exif_rotation/flutter_exif_rotation.dart';
 import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
@@ -41,6 +42,24 @@ class FaceBenchmarkService {
 
   Future<void> dispose() async {
     faceDetector.close();
+  }
+
+/// Sube el archivo CSV a Firebase Storage y retorna la URL de descarga.
+  Future<String> uploadCSV(File csvFile) async {
+    try {
+      final storageRef = FirebaseStorage.instance.ref();
+      final csvRef = storageRef.child('benchmark_results/${csvFile.uri.pathSegments.last}');
+      final uploadTask = csvRef.putFile(csvFile);
+      final snapshot = await uploadTask.whenComplete(() {});
+      final downloadURL = await snapshot.ref.getDownloadURL();
+      print('✅ CSV subido a Firebase Storage: $downloadURL');
+      return downloadURL;
+       // Verificar que la URL no esté vacía
+
+    } catch (e) {
+      print('❌ Error al subir el CSV: $e');
+      return '';
+    }
   }
 
   // Preparar InputImage y obtener dimensiones originales
