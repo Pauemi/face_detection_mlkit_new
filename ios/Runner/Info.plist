@@ -8,9 +8,7 @@
 	<string>Necesitamos acceder a la galería para seleccionar imágenes.</string>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<key>NSAppTransportSecurity</key>
-	<true />
-	<key>UIFileSharingEnabled</key>
-	<true />
+
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
