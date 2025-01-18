@@ -12,7 +12,6 @@ class BenchmarkResult {
   final double precision;
   final double recall;
   final double specificity;
-  final double fpr;
   final double f1Score;
   final int processingTime;
 
@@ -28,7 +27,6 @@ class BenchmarkResult {
     required this.precision,
     required this.recall,
     required this.specificity,
-    required this.fpr,
     required this.f1Score,
     required this.processingTime,
   });

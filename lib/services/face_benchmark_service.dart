@@ -173,7 +173,7 @@ class FaceBenchmarkService {
 
     // Crear archivo con headers
     await file.writeAsString(
-        'image_path,ground_truth,detected,iou,true_pos,false_pos,false_neg,true_neg,precision,recall,specificity,fpr,f1_score,processing_time_ms\n');
+        'image_path,ground_truth,detected,iou,true_pos,false_pos,false_neg,true_neg,precision,recall,specificity,f1_score,processing_time_ms\n');
     print('📄 Creando archivo CSV: ${file.path}');
     return file;
   }
@@ -197,7 +197,6 @@ class FaceBenchmarkService {
         '${result.precision.toStringAsFixed(4)},'
         '${result.recall.toStringAsFixed(4)},'
         '${result.specificity.toStringAsFixed(4)},'
-        '${result.fpr.toStringAsFixed(4)},'
         '${result.f1Score.toStringAsFixed(4)},'
         '${result.processingTime}\n';
 
@@ -376,8 +375,6 @@ class FaceBenchmarkService {
           final double specificity = (trueNegatives + falsePositives) > 0
               ? trueNegatives / (trueNegatives + falsePositives)
               : 0.0;
-          final double fprValue =
-              (falsePositives) / (falsePositives + trueNegatives);
 
           final benchmarkResult = BenchmarkResult(
             imageName: imageName,
@@ -391,7 +388,6 @@ class FaceBenchmarkService {
             precision: precision,
             recall: recall,
             specificity: specificity,
-            fpr: fprValue,
             f1Score: f1Score,
             processingTime: stopwatch.elapsedMilliseconds,
           );
