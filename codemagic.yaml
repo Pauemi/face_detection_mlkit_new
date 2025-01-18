@@ -1,0 +1,48 @@
+workflows:
+  face_detection_workflow:
+    name: Face Detection Test Workflow
+    max_build_duration: 60
+    environment:
+      vars:
+        FIREBASE_PROJECT_ID: your-firebase-project-id
+        FIREBASE_STORAGE_BUCKET: your-project.appspot.com
+        GOOGLE_APPLICATION_CREDENTIALS: /tmp/service-account.json
+      # Asegúrate de que FIREBASE_SERVICE_ACCOUNT_BASE64 esté marcada como segura
+      secure:
+        - FIREBASE_SERVICE_ACCOUNT_BASE64
+    scripts:
+      - name: Instalar Google Cloud SDK
+        script: |
+          curl https://sdk.cloud.google.com | bash > /dev/null
+          source $HOME/google-cloud-sdk/path.bash.inc
+          gcloud components install beta
+      - name: Configurar Google Cloud
+        script: |
+          echo $FIREBASE_SERVICE_ACCOUNT_BASE64 | base64 --decode > $GOOGLE_APPLICATION_CREDENTIALS
+          gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
+          gcloud config set project $FIREBASE_PROJECT_ID
+      - name: Instalar Dependencias
+        script: flutter pub get
+      - name: Construir APK (Android)
+        script: flutter build apk --release
+      - name: Ejecutar Pruebas Unitarias
+        script: flutter test
+      - name: Ejecutar Pruebas en Firebase Test Lab (Android)
+        script: |
+          gcloud firebase test android run \
+            --project $FIREBASE_PROJECT_ID \
+            --type instrumentation \
+            --app build/app/outputs/apk/release/app-release.apk \
+            --test build/app/outputs/apk/androidTest/debug/app-debug-androidTest.apk \
+            --device model=Galaxy_A54_5G,version=33,locale=es,orientation=portrait \
+            --timeout 120s \
+            --results-bucket $FIREBASE_STORAGE_BUCKET
+      - name: Subir Resultados a Firebase Storage
+        script: |
+          gsutil cp path/to/test_results/*.xml gs://$FIREBASE_STORAGE_BUCKET/test_results/
+    artifacts:
+      - test_results/*.xml
+    publishing:
+      scripts:
+        - name: Notificar Compleción
+          script: echo "Pruebas completadas y resultados subidos a Firebase Storage."
