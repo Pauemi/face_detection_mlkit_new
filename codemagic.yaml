@@ -54,7 +54,7 @@ workflows:
       - name: Ejecutar Pruebas de Integración en Android con Flutter Drive
         script: |
           flutter drive \
-            --driver=test_driver/integration_test_driver.dart \
+            --driver=integration_test/integration_test_driver.dart \
             --target=integration_test/face_benchmark_test.dart \
             -d emulator-5554
           
@@ -82,9 +82,9 @@ workflows:
       - name: Ejecutar Pruebas de Integración en iOS con Flutter Drive
         script: |
           flutter drive \
-            --driver=test_driver/integration_test_driver.dart \
+            --driver=integration_test/integration_test_driver.dart \
             --target=integration_test/face_benchmark_test.dart \
-            -d ios # Asegúrate de que el dispositivo iOS está disponible
+            -d "iPhone 16 Plus" # Asegúrate de que el dispositivo iOS está disponible
           
       # Paso 11: Subir Resultados Adicionales a Firebase Storage
       - name: Subir Resultados Adicionales a Firebase Storage
