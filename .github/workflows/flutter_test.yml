@@ -30,7 +30,6 @@ jobs:
         run: |
           flutter drive \
             --driver=test_driver/integration_test.dart \
-            --device model=b0q,version=33 \
             --target=integration_test/face_benchmark_test.dart
 
       - name: Upload Test Results to Firebase Test Lab (Android)
@@ -51,7 +50,8 @@ jobs:
           gcloud firebase test android run --type instrumentation \
             --app build/app/outputs/apk/debug/app-debug.apk \
             --test build/app/outputs/apk/androidTest/debug/app-debug-androidTest.apk \
-            --timeout 2m \
+            --device model=b0q,version=33 \
+            --timeout 30m \
             --results-bucket=${{ secrets.GCP_RESULTS_BUCKET }} \
             --results-dir=android_tests/${{ github.run_id }}
   ios-test:
