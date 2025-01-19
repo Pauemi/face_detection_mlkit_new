@@ -92,6 +92,6 @@ void main() {
         print('❌ Error al subir el archivo: $e');
         rethrow;
       }
-    }, timeout: Timeout(Duration(seconds: 1800)));
+    }, timeout: const Timeout(Duration(seconds: 1800)));
   });
 }

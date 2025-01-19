@@ -94,7 +94,7 @@ class _HomePageState extends State<HomePage> {
       _imageWidth = decodedImage.width.toDouble();
       _imageHeight = decodedImage.height.toDouble();
     });
-    print('✅ Dimensiones obtenidas: ${_imageWidth}x${_imageHeight}');
+    print('✅ Dimensiones obtenidas: ${_imageWidth}x$_imageHeight');
   }
 
   Future<void> _detectFaces() async {

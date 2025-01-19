@@ -72,7 +72,7 @@ class _FaceBenchmarkState extends State<FaceBenchmark> {
     });
 
     try {
-      final String annotationFilePath = 'assets/wider_face_val_bbx_gt.txt';
+      const String annotationFilePath = 'assets/wider_face_val_bbx_gt.txt';
       final List<BenchmarkResult> benchmarkResults =
           await benchmarkService.runBenchmark(annotationFilePath);
 
