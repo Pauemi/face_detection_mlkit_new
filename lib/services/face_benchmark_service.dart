@@ -408,6 +408,7 @@ class FaceBenchmarkService {
           processedImages++;
           print(
               '📈 Progreso: ${(processedImages / totalImages * 100).toStringAsFixed(1)}%');
+                
         } catch (e) {
           print('❌ Error procesando $imageName: $e');
         } finally {

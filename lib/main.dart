@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_core/firebase_core.dart' as firebase_core;
 import 'package:flutter/material.dart';
+import 'package:flutter_driver/driver_extension.dart';
 
 import 'firebase_options.dart' as firebase_options;
 import 'homepage.dart';
@@ -9,6 +10,8 @@ import 'widgets/face_benchmark.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  enableFlutterDriverExtension();
+
   await firebase_core.Firebase.initializeApp(
     options: firebase_options.DefaultFirebaseOptions.currentPlatform,
   );

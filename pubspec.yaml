@@ -48,6 +48,8 @@ dependencies:
   cupertino_icons: ^1.0.8
 
   permission_handler: ^11.0.0
+  flutter_driver:
+    sdk: flutter
 
 dev_dependencies:
   flutter_test:

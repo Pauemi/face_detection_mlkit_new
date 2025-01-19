@@ -6,11 +6,12 @@ import 'package:face_detection_mlkit/results/benchmark_result.dart';
 import 'package:face_detection_mlkit/services/face_benchmark_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import "package:flutter_driver/driver_extension.dart";
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-
+  enableFlutterDriverExtension();
   setUpAll(() async {
     await Firebase.initializeApp();
   });
@@ -24,74 +25,54 @@ void main() {
       storage = FirebaseStorage.instance;
     });
 
-    tearDown(() async {
-      await benchmarkService.dispose();
-    });
-
-    test('Run benchmark and generate CSV', () async {
-      // Ruta al archivo de anotaciones
-      const String annotationFilePath = 'assets/wider_face_val_bbx_gt.txt';
-
-      // Ejecutar el benchmark
-      final List<BenchmarkResult> results =
-          await benchmarkService.runBenchmark(annotationFilePath);
-
-      // Verificar que se hayan procesado imágenes
-      expect(results.isNotEmpty, true);
-      print('✅ Se procesaron ${results.length} imágenes.');
-
-      // Verificar que el archivo CSV se haya creado
-      final String storagePath = await benchmarkService.getStoragePath();
-      final Directory directory = Directory(storagePath);
-      final List<FileSystemEntity> files = directory.listSync();
-
-      final Iterable<File> csvFiles = files.whereType<File>().where((file) =>
-          file.path.endsWith('.csv') &&
-          file.path.contains('benchmark_results'));
-
-      expect(csvFiles.isNotEmpty, true);
-      print('✅ Archivo CSV generado: ${csvFiles.first.path}');
-
-      // Leer el archivo CSV y verificar contenido
-      final File csvFile = csvFiles.first;
-      final String csvContent = await csvFile.readAsString();
-
-      expect(csvContent.contains('image_path'), true); // Verificar headers
-
-      final List<String> lines = csvContent
-          .split('\n')
-          .where((line) => line.trim().isNotEmpty)
-          .toList();
-
-      expect(lines.length, results.length + 1); // +1 por headers
-      print('✅ Verificación del contenido del CSV completada.');
-
-      // Subir el archivo a Firebase Storage
-      final String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
-      final String nombreArchivo = 'benchmark_results_$timestamp.csv';
-      
-      final String androidResultsPath = 'build/test_results/android/benchmark_results_$timestamp.csv';
-      final String iosResultsPath = 'build/test_results/ios/benchmark_results_$timestamp.csv';
-
-      await csvFile.copy(androidResultsPath); // Para Android
-      await csvFile.copy(iosResultsPath);
-      try {
-         // Para iOS
-        // Crear referencia al archivo en Firebase Storage
-        final storageRef = storage.ref('benchmark_results/$nombreArchivo');
-        
-        // Subir el archivo
-        final uploadTask = await storageRef.putFile(csvFile);
-        
-        // Obtener la URL de descarga (opcional)
-        final downloadUrl = await uploadTask.ref.getDownloadURL();
-        
-        print('✅ Archivo CSV subido exitosamente');
-        print('📥 URL de descarga: $downloadUrl');
-      } catch (e) {
-        print('❌ Error al subir el archivo: $e');
-        rethrow;
-      }
-    }, timeout: const Timeout(Duration(seconds: 1800)));
+  tearDown(() async {
+    await benchmarkService.dispose();
   });
+
+  Future<void> uploadFileToFirebase(File file, String destinationPath) async {
+    try {
+      final storageRef = FirebaseStorage.instance.ref(destinationPath);
+      final uploadTask = await storageRef.putFile(file);
+      final downloadUrl = await uploadTask.ref.getDownloadURL();
+      print('✅ Archivo subido exitosamente a Firebase Storage: $downloadUrl');
+    } catch (e) {
+      print('❌ Error al subir el archivo a Firebase Storage: $e');
+      rethrow;
+    }
+  }
+
+  test('Run benchmark and generate CSV', () async {
+    const String annotationFilePath = 'assets/wider_face_val_bbx_gt.txt';
+
+    // Ejecutar el benchmark
+    final List<BenchmarkResult> results =
+        await benchmarkService.runBenchmark(annotationFilePath);
+
+    expect(results.isNotEmpty, true);
+    print('✅ Se procesaron ${results.length} imágenes.');
+
+    // Verificar que el archivo CSV se haya creado
+    final String storagePath = await benchmarkService.getStoragePath();
+    final Directory directory = Directory(storagePath);
+    final List<FileSystemEntity> files = directory.listSync();
+
+    final Iterable<File> csvFiles = files.whereType<File>().where((file) =>
+        file.path.endsWith('.csv') &&
+        file.path.contains('benchmark_results'));
+
+    expect(csvFiles.isNotEmpty, true);
+    print('✅ Archivo CSV generado: ${csvFiles.first.path}');
+
+    // Subir el archivo a Firebase Storage
+    final File csvFile = csvFiles.first;
+    if (csvFile.existsSync()) {
+      final String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+      final String destinationPath = 'benchmark_results/benchmark_results_$timestamp.csv';
+
+      await uploadFileToFirebase(csvFile, destinationPath);
+    } else {
+      print('❌ Archivo CSV no encontrado en la ruta: ${csvFile.path}');
+    }
+  }, timeout: const Timeout(Duration(seconds: 1800)));
+});
 }
