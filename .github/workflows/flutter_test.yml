@@ -29,7 +29,7 @@ jobs:
       - name: Run Android Integration Tests
         run: |
           flutter drive \
-            -d linux \
+            -d chrome \
             --driver=test_driver/integration_test.dart \
             --target=integration_test/face_benchmark_test.dart 
 
