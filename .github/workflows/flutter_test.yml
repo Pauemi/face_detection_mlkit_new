@@ -93,11 +93,12 @@ jobs:
 
       # 5. Construir la aplicación iOS
       - name: Build iOS App
-        run: flutter build ios --release --no-codesign
+        run: flutter build ios --release --no-codesign -d 35DDC1EB-7B37-446F-8963-82D40A585406
 
       # 6. Construir las pruebas de integración para iOS
       - name: Build iOS Tests
-        run: flutter build ios --config-only integration_test/face_benchmark_test.dart --no-codesign
+        run: flutter build ios --config-only integration_test/face_benchmark_test.dart --no-codesign -d 35DDC1EB-7B37-446F-8963-82D40A585406
+
 
       # 7. Construir para Testing con Xcode
       - name: Build for Testing with Xcode
