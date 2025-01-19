@@ -57,8 +57,13 @@ void main() {
       final String csvContent = await csvFile.readAsString();
 
       expect(csvContent.contains('image_path'), true); // Verificar headers
-      expect(
-          csvContent.split('\n').length, results.length + 1); // +1 por headers
+
+      final List<String> lines = csvContent
+          .split('\n')
+          .where((line) => line.trim().isNotEmpty)
+          .toList();
+
+      expect(lines.length, results.length + 1); // +1 por headers
       print('✅ Verificación del contenido del CSV completada.');
 
       // Subir el archivo a Firebase Storage
