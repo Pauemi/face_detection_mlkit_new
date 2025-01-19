@@ -29,8 +29,9 @@ jobs:
       - name: Run Android Integration Tests
         run: |
           flutter drive \
+            -d linux \
             --driver=test_driver/integration_test.dart \
-            --target=integration_test/face_benchmark_test.dart
+            --target=integration_test/face_benchmark_test.dart 
 
       - name: Upload Test Results to Firebase Test Lab (Android)
         env:
